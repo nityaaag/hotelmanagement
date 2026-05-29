@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        body{
+            background:black;
+            color:white;
+            margin: 0;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        .menu-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+            gap:30px;
+            margin-top:40px;
+        }
+
+        .food-card{
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+            overflow:hidden;
+            box-shadow:0 10px 25px rgba(0,0,0,0.4);
+            transition:0.4s;
+            backdrop-filter:blur(12px);
+        }
+
+        .food-card:hover{
+            transform:translateY(-10px);
+            box-shadow:0 0 25px rgba(216,180,254,0.5);
+        }
+
+        .food-card img{
+            width:100%;
+            height:230px;
+            object-fit:cover;
+        }
+
+        .food-content{
+            padding:25px;
+        }
+
+        .food-content h2{
+            margin-bottom:10px;
+        }
+
+        .price{
+            font-size:22px;
+            color:#d8b4fe;
+            font-weight:bold;
+            margin:15px 0;
+        }
+
+        button{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:10px;
+            background:#c084fc;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#a855f7;
+        }
+
+        .bill-box{
+            margin-top:60px;
+            background:rgba(255,255,255,0.08);
+            padding:30px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+        }
+
+        .bill-box h2{
+            margin-bottom:20px;
+        }
+
+        .bill-item{
+            margin:10px 0;
+            font-size:18px;
+        }
+
+        .total{
+            margin-top:20px;
+            font-size:28px;
+            color:#d8b4fe;
+            font-weight:bold;
+        }
+
+        .nav-links a:hover {
+            color: #d8b4fe;
+        }
+
+        .container{
+            padding:40px;
+        }
+
+        h1{
+            text-align:center;
+            color:#d8b4fe;
+            margin-bottom:20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">Luxury Restaurant</div>
+
+    <div class="nav-links">
+
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="activities.html">Activities</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="billing.html">Billing</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Restaurant Menu</h1>
+
+    <div class="menu-grid">
+
+        <!-- 1 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591">
+
+            <div class="food-content">
+
+                <h2>Farmhouse Pizza</h2>
+
+                <p>
+                    Loaded with cheese and fresh vegetables.
+                </p>
+
+                <div class="price">
+                    ₹599
+                </div>
+
+                <button onclick="addItem('Farmhouse Pizza',599)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 2 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd">
+
+            <div class="food-content">
+
+                <h2>Cheese Burger</h2>
+
+                <p>
+                    Crispy burger with fries combo.
+                </p>
+
+                <div class="price">
+                    ₹349
+                </div>
+
+                <button onclick="addItem('Cheese Burger',349)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 3 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9">
+
+            <div class="food-content">
+
+                <h2>White Sauce Pasta</h2>
+
+                <p>
+                    Creamy Italian pasta with herbs.
+                </p>
+
+                <div class="price">
+                    ₹449
+                </div>
+
+                <button onclick="addItem('White Sauce Pasta',449)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 4 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c">
+
+            <div class="food-content">
+
+                <h2>Caesar Salad</h2>
+
+                <p>
+                    Fresh healthy salad with dressing.
+                </p>
+
+                <div class="price">
+                    ₹299
+                </div>
+
+                <button onclick="addItem('Caesar Salad',299)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 5 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836">
+
+            <div class="food-content">
+
+                <h2>Paneer Tikka</h2>
+
+                <p>
+                    Smoky grilled paneer starter.
+                </p>
+
+                <div class="price">
+                    ₹399
+                </div>
+
+                <button onclick="addItem('Paneer Tikka',399)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 6 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d">
+
+            <div class="food-content">
+
+                <h2>Veg Biryani</h2>
+
+                <p>
+                    Aromatic biryani with vegetables.
+                </p>
+
+                <div class="price">
+                    ₹499
+                </div>
+
+                <button onclick="addItem('Veg Biryani',499)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 7 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061">
+
+            <div class="food-content">
+
+                <h2>Chocolate Dessert</h2>
+
+                <p>
+                    Rich chocolate mousse dessert.
+                </p>
+
+                <div class="price">
+                    ₹350
+                </div>
+
+                <button onclick="addItem('Chocolate Dessert',350)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 8 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd">
+
+            <div class="food-content">
+
+                <h2>Cold Coffee</h2>
+
+                <p>
+                    Chilled creamy cold coffee.
+                </p>
+
+                <div class="price">
+                    ₹220
+                </div>
+
+                <button onclick="addItem('Cold Coffee',220)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 9 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085">
+
+            <div class="food-content">
+
+                <h2>Cappuccino</h2>
+
+                <p>
+                    Hot cappuccino with coffee art.
+                </p>
+
+                <div class="price">
+                    ₹180
+                </div>
+
+                <button onclick="addItem('Cappuccino',180)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- 10 -->
+
+        <div class="food-card">
+
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b">
+
+            <div class="food-content">
+
+                <h2>Berry Mocktail</h2>
+
+                <p>
+                    Refreshing berry drink with mint.
+                </p>
+
+                <div class="price">
+                    ₹260
+                </div>
+
+                <button onclick="addItem('Berry Mocktail',260)">
+                    Add To Bill
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BILL -->
+
+    <div class="bill-box">
+
+        <h2>Your Bill</h2>
+
+        <div id="billItems"></div>
+
+        <div class="total">
+            Total: ₹<span id="totalAmount">0</span>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let total = 0;
+
+let foodItems =
+    JSON.parse(localStorage.getItem("foodItems")) || [];
+
+foodItems.forEach(item => {
+
+    total += item.price;
+
+});
+
+function addItem(name,price){
+
+    foodItems.push({
+
+        name:name,
+        price:price
+
+    });
+
+    localStorage.setItem(
+        "foodItems",
+        JSON.stringify(foodItems)
+    );
+
+    total += price;
+
+    alert(name + " (₹" + price.toLocaleString('en-IN') + ") Added Successfully");
+
+    displayBill();
+
+}
+
+function displayBill(){
+
+    let billItems =
+        document.getElementById("billItems");
+
+    billItems.innerHTML = "";
+
+    foodItems.forEach(item => {
+
+        let div = document.createElement("div");
+
+        div.classList.add("bill-item");
+
+        div.innerHTML =
+            item.name + " - " + "₹" + item.price.toLocaleString('en-IN');
+
+        billItems.appendChild(div);
+
+    });
+
+    document.getElementById("totalAmount")
+        .innerText = total.toLocaleString('en-IN');
+
+}
+
+displayBill();
+
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+        document.getElementById("logoutBtn").style.display = "inline";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
+
+checkLogin();
+
+</script>
+</body>
+</html>

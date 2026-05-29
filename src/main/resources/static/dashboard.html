@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        body{
+            background:black;
+            color:white;
+            font-family:Arial, Helvetica, sans-serif;
+y
+            margin: 0;
+        }
+
+        .nav-links a:hover {
+            color: #d8b4fe;
+        }
+
+        .container{
+            padding:40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1{
+            text-align:center;
+            color:#d8b4fe;
+            margin-bottom:40px;
+        }
+
+        .dashboard-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+            gap:30px;
+        }
+
+        .card{
+            background:rgba(255,255,255,0.08);
+            padding:30px;
+            border-radius:20px;
+            backdrop-filter:blur(12px);
+            box-shadow:0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .card h2{
+            color:#d8b4fe;
+            margin-bottom:20px;
+        }
+
+        .item{
+            margin:10px 0;
+            font-size:18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bill-section{
+            margin-top:50px;
+            background:rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+            text-align:center;
+        }
+
+        .amount{
+            font-size:30px;
+            margin:15px 0;
+            color:#d8b4fe;
+            font-weight:bold;
+        }
+
+        button{
+            padding:15px 35px;
+            border:none;
+            border-radius:12px;
+            background:#c084fc;
+            color:white;
+            font-size:18px;
+            cursor:pointer;
+            transition: 0.3s;
+        }
+
+        button:hover{
+            background:#a855f7;
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 8px;
+            margin-left: 10px;
+        }
+
+        .bill-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .empty-link {
+            color: #d8b4fe;
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        LRMS Luxury
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="restaurant.html">Restaurant</a>
+        <a href="activities.html">Activities</a>
+        <a href="partner_usage.html">Partner Logs</a>
+        <a href="billing.html">Billing</a>
+        <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+        <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Your Booking Summary</h1>
+
+    <div class="dashboard-grid">
+
+        <!-- ROOMS -->
+
+        <div class="card">
+
+            <h2>Selected Rooms</h2>
+
+            <div id="roomsData"></div>
+
+        </div>
+
+        <!-- FOOD -->
+
+        <div class="card">
+
+            <h2>Food Ordered</h2>
+
+            <div id="foodData"></div>
+
+        </div>
+
+        <!-- ACTIVITIES -->
+
+        <div class="card">
+
+            <h2>Activities Selected</h2>
+
+            <div id="activitiesData"></div>
+
+        </div>
+
+    </div>
+
+    <!-- BILL -->
+
+    <div class="bill-section">
+
+        <h2>Billing Summary</h2>
+
+        <div class="amount">
+            Subtotal: ₹<span id="subtotal">0</span>
+        </div>
+
+        <div class="amount">
+            GST (18%): ₹<span id="gst">0</span>
+        </div>
+
+        <div class="amount">
+            Final Total: ₹<span id="finalTotal">0</span>
+        </div>
+
+        <div class="bill-actions">
+            <button onclick="goToBilling()">Proceed To Billing</button>
+            <button onclick="resetAll()" style="background:#4b5563;">Reset & New Booking</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* GET STORAGE DATA */
+function loadData() {
+    return {
+        rooms: JSON.parse(localStorage.getItem("rooms")) || [],
+        foodItems: JSON.parse(localStorage.getItem("foodItems")) || [],
+        activities: JSON.parse(localStorage.getItem("activities")) || []
+    };
+}
+
+let { rooms, foodItems, activities } = loadData();
+
+/* HTML SECTIONS */
+
+let roomsData =
+    document.getElementById("roomsData");
+
+let foodData =
+    document.getElementById("foodData");
+
+let activitiesData =
+    document.getElementById("activitiesData");
+
+/* TOTAL */
+
+let subtotal = 0;
+
+/* ROOMS */
+
+if(rooms.length === 0){
+    roomsData.innerHTML =
+        "<div class='item'>Nothing selected. <a href='rooms.html' class='empty-link'>Book Rooms</a></div>";
+}else{
+    rooms.forEach((room, index) => {
+        roomsData.innerHTML +=
+            `<div class="item">
+                <span>${room.name} - ₹${room.price.toLocaleString('en-IN')}</span>
+                <button class="remove-btn" onclick="removeItem('rooms', ${index})">Remove</button>
+            </div>`;
+        subtotal += room.price;
+    });
+}
+
+/* FOOD */
+
+if(foodItems.length === 0){
+    foodData.innerHTML =
+        "<div class='item'>Nothing selected. <a href='restaurant.html' class='empty-link'>Order Food</a></div>";
+}else{
+    foodItems.forEach((food, index) => {
+        foodData.innerHTML +=
+            `<div class="item">
+                <span>${food.name} - ₹${food.price.toLocaleString('en-IN')}</span>
+                <button class="remove-btn" onclick="removeItem('foodItems', ${index})">Remove</button>
+            </div>`;
+        subtotal += food.price;
+    });
+}
+
+/* ACTIVITIES */
+
+if(activities.length === 0){
+    activitiesData.innerHTML =
+        "<div class='item'>Nothing selected. <a href='activities.html' class='empty-link'>Choose Activity</a></div>";
+}else{
+    activities.forEach((activity, index) => {
+        activitiesData.innerHTML +=
+            `<div class="item">
+                <span>${activity.name} - ₹${activity.price.toLocaleString('en-IN')}</span>
+                <button class="remove-btn" onclick="removeItem('activities', ${index})">Remove</button>
+            </div>`;
+        subtotal += activity.price;
+    });
+}
+
+/* GST */
+
+let gst =
+    subtotal * 0.18;
+
+/* FINAL */
+
+let finalTotal =
+    subtotal + gst;
+
+/* DISPLAY */
+
+document.getElementById("subtotal")
+    .innerText = subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+document.getElementById("gst")
+    .innerText = gst.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+document.getElementById("finalTotal")
+    .innerText = finalTotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+/* SAVE BILL */
+
+localStorage.setItem(
+    "subtotal",
+    subtotal
+);
+
+localStorage.setItem(
+    "gst",
+    gst
+);
+
+localStorage.setItem(
+    "finalTotal",
+    finalTotal
+);
+
+/* REMOVE ITEM */
+function removeItem(type, index) {
+    let items = JSON.parse(localStorage.getItem(type)) || [];
+    items.splice(index, 1);
+    localStorage.setItem(type, JSON.stringify(items));
+    location.reload();
+}
+
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+        document.getElementById("logoutBtn").style.display = "inline";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
+
+checkLogin();
+
+/* BILL PAGE */
+function goToBilling(){
+    window.location.href =
+        "billing.html";
+}
+
+/* RESET ALL */
+function resetAll() {
+    localStorage.clear();
+    location.reload();
+}
+
+</script>
+
+</body>
+
+</html>

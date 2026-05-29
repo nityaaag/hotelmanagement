@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Assistant</title>
+
+    <style>
+
+        body{
+            background:black;
+            color:white;
+            font-family:Arial;
+            padding:40px;
+        }
+
+        h1{
+            color:#d8b4fe;
+            text-align:center;
+        }
+
+        .chat-box{
+            max-width:700px;
+            margin:auto;
+        }
+
+        textarea{
+            width:100%;
+            height:120px;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            font-size:18px;
+        }
+
+        button{
+            width:100%;
+            margin-top:20px;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            background:#c084fc;
+            color:white;
+            font-size:18px;
+            cursor:pointer;
+        }
+
+        .response{
+            margin-top:30px;
+            background:#111;
+            padding:25px;
+            border-radius:15px;
+            min-height:100px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Luxury Resort AI Assistant</h1>
+
+<div class="chat-box">
+
+    <textarea
+        id="message"
+        placeholder="Ask anything..."
+    ></textarea>
+
+    <button onclick="askAI()">
+        Ask AI
+    </button>
+
+    <div
+        class="response"
+        id="response"
+    >
+        AI response will appear here...
+    </div>
+
+</div>
+
+<script>
+
+async function askAI(){
+
+    let message =
+        document.getElementById("message")
+        .value;
+
+    let response =
+        await fetch(
+            "/api/chat",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+                    message:message
+                })
+            }
+        );
+
+    let data =
+        await response.text();
+
+    document.getElementById(
+        "response"
+    ).innerHTML = data;
+}
+
+</script>
+
+</body>
+
+</html>

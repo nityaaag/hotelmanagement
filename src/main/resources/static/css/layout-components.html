@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <!-- Shared Header with Home Link -->
+    <div th:fragment="header" class="header-nav">
+        <a th:href="@{/}" class="home-link">🏠 Home</a>
+    </div>
+
+    <!-- Floating Bot Launcher -->
+    <a th:fragment="bot-icon" th:href="@{/chat}" class="bot-launcher" title="Ask Assistant">
+        🤖
+    </a>
+
+</body>
+</html>

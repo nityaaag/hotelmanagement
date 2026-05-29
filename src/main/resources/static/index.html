@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>LRMS</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Login Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+        .modal-box {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #d8b4fe;
+            box-shadow: 0 0 30px rgba(216,180,254,0.3);
+        }
+        .modal-box input {
+            padding: 12px;
+            width: 80%;
+            margin: 20px 0;
+            border-radius: 8px; border: 1px solid #333; background: #222; color: white;
+        }
+        .hero-buttons{
+
+            margin-top:30px;
+
+        }
+
+        .hero-buttons button{
+
+            margin:10px;
+            padding:15px 30px;
+            border:none;
+            border-radius:12px;
+            font-size:18px;
+            cursor:pointer;
+            transition:0.3s;
+
+        }
+
+        .main-btn{
+
+            background:#c084fc;
+            color:white;
+
+        }
+
+        .main-btn:hover{
+
+            background:#a855f7;
+            transform:scale(1.05);
+
+        }
+
+        .chat-btn{
+
+            background:black;
+            color:#d8b4fe;
+            border:2px solid #d8b4fe;
+
+        }
+
+        .chat-btn:hover{
+
+            background:#d8b4fe;
+            color:black;
+            transform:scale(1.05);
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        LRMS Luxury
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="restaurant.html">Restaurant</a>
+        <a href="activities.html">Activities</a>
+        <a href="partner_usage.html">Partner Logs</a>
+        <a href="billing.html">Billing</a>
+        <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+        <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <div class="hero">
+
+        <h1>
+            Lodging & Restaurant Management
+        </h1>
+
+        <p>
+            Experience luxury management with modern room booking,
+            restaurant ordering, billing, and customer handling.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="chatbot.html">
+
+                <button class="chat-btn">
+                    AI Assistant
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- LOGIN POPUP -->
+<div id="loginModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 style="color: #d8b4fe;">Welcome to LRMS</h2>
+        <p style="color: #ccc;">Please enter your credentials to access the system</p>
+        <input type="text" id="userNameInput" placeholder="Your Name">
+        <input type="password" id="passwordInput" placeholder="Password">
+        <br>
+        <button class="main-btn" onclick="login()">Sign In</button>
+    </div>
+</div>
+
+<div class="footer">
+    © 2026 LRMS | Designed by Nitya
+</div>
+
+<script>
+    function checkLogin() {
+        const user = localStorage.getItem("loggedInUser");
+        if (user) {
+            document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+            document.getElementById("logoutBtn").style.display = "inline";
+            document.getElementById("loginModal").style.display = "none";
+        } else {
+            document.getElementById("loginModal").style.display = "flex";
+        }
+    }
+
+    function login() {
+        const name = document.getElementById("userNameInput").value;
+        const pass = document.getElementById("passwordInput").value;
+
+        if (name.trim() !== "" && pass.trim() !== "") {
+            localStorage.setItem("loggedInUser", name);
+            checkLogin();
+        } else {
+            alert("Please enter both name and password.");
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        location.reload();
+    }
+
+    window.onload = checkLogin;
+</script>
+
+</body>
+</html>

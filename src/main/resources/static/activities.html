@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Activities Booking</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .activity-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:30px;
+            margin-top:40px;
+        }
+
+        .activity-card{
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+            overflow:hidden;
+            backdrop-filter:blur(10px);
+            transition:0.4s;
+            box-shadow:0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .activity-card:hover{
+            transform:translateY(-10px);
+            box-shadow:0 0 30px rgba(216,180,254,0.5);
+        }
+
+        .activity-card img{
+            width:100%;
+            height:220px;
+            object-fit:cover;
+        }
+
+        .activity-content{
+            padding:25px;
+        }
+
+        .price{
+            font-size:22px;
+            color:#d8b4fe;
+            margin:15px 0;
+            font-weight:bold;
+        }
+
+        .book-btn{
+            width:100%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">LRMS Luxury</div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="restaurant.html">Restaurant</a>
+        <a href="activities.html">Activities</a>
+        <a href="partner_usage.html">Partner Logs</a>
+        <a href="billing.html">Billing</a>
+        <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+        <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Book Activities</h1>
+
+    <div class="activity-grid">
+
+        <!-- SWIMMING -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1575429198097-0414ec08e8cd">
+
+            <div class="activity-content">
+
+                <h2>Swimming Pool</h2>
+
+                <p>
+                    Luxury infinity pool with lake side seating.
+                </p>
+
+                <div class="price">
+                    ₹1500 / session
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('Swimming Pool',1500)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- GYM -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438">
+
+            <div class="activity-content">
+
+                <h2>Gym Access</h2>
+
+                <p>
+                    Modern fitness center with personal trainers.
+                </p>
+
+                <div class="price">
+                    ₹1000 / day
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('Gym Access ',1000)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- SPORTS -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc">
+
+            <div class="activity-content">
+
+                <h2>Sports Room</h2>
+
+                <p>
+                    Indoor games including billiards, table tennis & chess.
+                </p>
+
+                <div class="price">
+                    ₹1200 / session
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('Sports Session',1200)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- BEACH -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+
+            <div class="activity-content">
+
+                <h2>Private Beach</h2>
+
+                <p>
+                    Enjoy private beach access with sunset activities.
+                </p>
+
+                <div class="price">
+                    ₹3000 / evening
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('Private Beach',3000)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- SPA -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15">
+
+            <div class="activity-content">
+
+                <h2>Spa & Massage</h2>
+
+                <p>
+                    Relax with premium spa and wellness therapies.
+                </p>
+
+                <div class="price">
+                    ₹2500 / session
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('SPA Session',2500)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- BONFIRE -->
+
+        <div class="activity-card">
+
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
+
+            <div class="activity-content">
+
+                <h2>Bonfire Night</h2>
+
+                <p>
+                    Evening bonfire with music and snacks.
+                </p>
+
+                <div class="price">
+                    ₹1800 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookActivity('Bonfire Night',1800)">
+    Book Activity
+</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+function bookActivity(activityName,price){
+
+    let activities =
+        JSON.parse(localStorage.getItem("activities")) || [];
+
+    activities.push({
+        name:activityName,
+        price:price
+    });
+
+    localStorage.setItem(
+        "activities",
+        JSON.stringify(activities)
+    );
+
+    alert(activityName + " (₹" + price.toLocaleString('en-IN') + ") Added Successfully");
+}
+
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+        document.getElementById("logoutBtn").style.display = "inline";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
+
+checkLogin();
+
+</script>
+</body>
+</html>

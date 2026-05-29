@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Rooms</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .room-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:30px;
+            margin-top:40px;
+        }
+
+        .room-card{
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+            overflow:hidden;
+            backdrop-filter:blur(10px);
+            transition:0.4s;
+            box-shadow:0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .room-card:hover{
+            transform:translateY(-10px);
+            box-shadow:0 0 30px rgba(216,180,254,0.5);
+        }
+
+        .room-card img{
+            width:100%;
+            height:220px;
+            object-fit:cover;
+        }
+
+        .room-content{
+            padding:25px;
+        }
+
+        .price{
+            font-size:24px;
+            color:#d8b4fe;
+            margin:15px 0;
+            font-weight:bold;
+        }
+
+        .book-btn{
+            width:100%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">LRMS Luxury</div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="restaurant.html">Restaurant</a>
+        <a href="activities.html">Activities</a>
+        <a href="partner_usage.html">Partner Logs</a>
+        <a href="billing.html">Billing</a>
+        <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+        <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Choose Your Room</h1>
+
+    <div class="room-grid">
+
+        <!-- LAKE VIEW -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945">
+
+            <div class="room-content">
+
+                <h2>Lake View Room</h2>
+
+                <p>
+                    Beautiful lake-facing luxury room with balcony view.
+                </p>
+
+                <div class="price">
+                    ₹8000 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Lake View Room',8000)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- GARDEN VIEW -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b">
+
+            <div class="room-content">
+
+                <h2>Garden View Room</h2>
+
+                <p>
+                    Relaxing greenery experience with peaceful atmosphere.
+                </p>
+
+                <div class="price">
+                    ₹6500 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Garden View Room',6500)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- DELUXE -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427">
+
+            <div class="room-content">
+
+                <h2>Deluxe Room</h2>
+
+                <p>
+                    Premium deluxe room with modern interior and comfort.
+                </p>
+
+                <div class="price">
+                    ₹5500 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Deluxe Room',5500)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- SUITE -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461">
+
+            <div class="room-content">
+
+                <h2>Suite Room</h2>
+
+                <p>
+                    Luxury suite with private lounge and premium services.
+                </p>
+
+                <div class="price">
+                    ₹12000 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Suite Room',12000)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- INSIDE VIEW -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85">
+
+            <div class="room-content">
+
+                <h2>Inside View Room</h2>
+
+                <p>
+                    Affordable cozy room perfect for budget stays.
+                </p>
+
+                <div class="price">
+                    ₹3500 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Inside View Room',3500)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+        <!-- ROAD VIEW -->
+
+        <div class="room-card">
+
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267">
+
+            <div class="room-content">
+
+                <h2>Road View Room</h2>
+
+                <p>
+                    Stylish room with city road view and modern design.
+                </p>
+
+                <div class="price">
+                    ₹4500 / night
+                </div>
+
+                <button class="book-btn"
+onclick="bookRoom('Road View Room',4500)">
+    Book Now
+</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+function bookRoom(roomName,price){
+
+    let rooms =
+        JSON.parse(localStorage.getItem("rooms")) || [];
+
+    rooms.push({
+        name:roomName,
+        price:price
+    });
+
+    localStorage.setItem("rooms",JSON.stringify(rooms));
+
+    alert(roomName + " (₹" + price.toLocaleString('en-IN') + ") Added Successfully");
+
+}
+
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+        document.getElementById("logoutBtn").style.display = "inline";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
+
+checkLogin();
+
+</script>
+</body>
+</html>

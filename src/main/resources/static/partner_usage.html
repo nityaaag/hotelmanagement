@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Partner API Usage - LRMS</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .container {
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #d8b4fe;
+            margin-bottom: 40px;
+        }
+        .usage-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .usage-table th, .usage-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(216, 180, 254, 0.2);
+        }
+        .usage-table th {
+            background: rgba(192, 132, 252, 0.2);
+            color: #d8b4fe;
+            font-size: 18px;
+        }
+        .usage-table tr:hover {
+            background: rgba(216, 180, 254, 0.1);
+        }
+        .count-badge {
+            background: #c084fc;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">LRMS Luxury</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="rooms.html">Rooms</a>
+            <a href="restaurant.html">Restaurant</a>
+            <a href="activities.html">Activities</a>
+            <a href="partner_usage.html">Partner Logs</a>
+            <a href="billing.html">Billing</a>
+            <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+            <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Third-Party API Usage Dashboard</h1>
+        <table class="usage-table">
+            <thead>
+                <tr>
+                    <th>Endpoint Description (Partner & Method)</th>
+                    <th>Total Calls</th>
+                </tr>
+            </thead>
+            <tbody id="usageBody">
+                <tr>
+                    <td colspan="2" style="text-align:center;">Loading logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('/api/v1/partners/dashboard/usage')
+            .then(res => res.json())
+            .then(data => {
+                const body = document.getElementById('usageBody');
+                body.innerHTML = '';
+                Object.entries(data).forEach(([key, value]) => {
+                    body.innerHTML += `
+                        <tr>
+                            <td>${key}</td>
+                            <td><span class="count-badge">${value}</span></td>
+                        </tr>`;
+                });
+            })
+            .catch(err => console.error('Error fetching usage:', err));
+
+        function checkLogin() {
+            const user = localStorage.getItem("loggedInUser");
+            if (user) {
+                document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+                document.getElementById("logoutBtn").style.display = "inline";
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
+        }
+
+        checkLogin();
+    </script>
+</body>
+</html>

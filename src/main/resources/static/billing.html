@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Billing</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        body{
+            background:black;
+            color:white;
+            font-family:Arial;
+            margin: 0;
+        }
+
+        @media print {
+            .navbar, .print-btn, .generate-btn {
+                display: none !important;
+            }
+            .bill-card {
+                box-shadow: none;
+                background: white;
+                color: black;
+            }
+            h1, .bill-item, .total {
+                color: black !important;
+            }
+        }
+
+        .nav-links a:hover {
+            color: #d8b4fe;
+        }
+
+        .container{
+            padding:50px;
+        }
+
+        .bill-card{
+            max-width:700px;
+            margin:auto;
+            background:rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+        }
+
+        h1{
+            text-align:center;
+            color:#d8b4fe;
+            margin-bottom:30px;
+        }
+
+        .bill-item{
+            display:flex;
+            justify-content:space-between;
+            margin:15px 0;
+            font-size:20px;
+        }
+
+        .total{
+            margin-top:30px;
+            font-size:28px;
+            color:#d8b4fe;
+            font-weight:bold;
+        }
+
+        button{
+            width:100%;
+            margin-top:30px;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            background:#c084fc;
+            color:white;
+            font-size:18px;
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo">
+        LRMS Luxury
+    </div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="restaurant.html">Restaurant</a>
+        <a href="activities.html">Activities</a>
+        <a href="partner_usage.html">Partner Logs</a>
+        <a href="billing.html">Billing</a>
+        <span id="userDisplay" style="color: #d8b4fe; margin-left: 20px; font-weight: bold;"></span>
+        <a href="#" id="logoutBtn" onclick="logout()" style="display: none; color: #ef4444; margin-left: 15px;">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="bill-card">
+
+        <h1>Luxury Resort Invoice</h1>
+
+        <div class="bill-item">
+            <span>Subtotal</span>
+            <span>
+                ₹<span id="subtotal"></span>
+            </span>
+        </div>
+
+        <div class="bill-item">
+            <span>GST (18%)</span>
+            <span>
+                ₹<span id="gst"></span>
+            </span>
+        </div>
+
+        <div class="bill-item total">
+            <span>Final Amount</span>
+            <span>
+                ₹<span id="finalTotal"></span>
+            </span>
+        </div>
+
+        <button class="print-btn" onclick="printBill()">
+            Print Bill
+        </button>
+
+        <button class="generate-btn" onclick="generateBill()" style="background:#4b5563; margin-top: 15px;">
+            Generate Final Bill
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("subtotal")
+    .innerText =
+    Number(localStorage.getItem("subtotal")).toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+document.getElementById("gst")
+    .innerText =
+    Number(localStorage.getItem("gst"))
+    .toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+document.getElementById("finalTotal")
+    .innerText =
+    Number(localStorage.getItem("finalTotal"))
+    .toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+function generateBill(){
+
+    alert(
+        "Bill Generated Successfully!"
+    );
+
+}
+
+function printBill() {
+    window.print();
+}
+
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        document.getElementById("userDisplay").innerText = "Logged in as: " + user;
+        document.getElementById("logoutBtn").style.display = "inline";
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
+
+checkLogin();
+
+</script>
+</body>
+
+</html>
